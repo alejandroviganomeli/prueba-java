@@ -178,8 +178,9 @@ public class MovementMapper {
      * @return
      */
     public BigDecimal mapIncomePaymentAmount(List<Movement> movements){
-        return movements.stream().filter( m -> true)
-                .map(cothis.meli.reporting.example.domain.Movement::getAmount)
+        return movements.stream()
+                .filter(Movement::isIncome)
+                .map(Movement::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
