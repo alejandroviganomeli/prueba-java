@@ -153,7 +153,7 @@ public class Movement {
     }
 
     // HasDetail returns true if any of the details is equal than movement detail, else false.
-    public boolean hasDetail(String[] details) {
+    public boolean hasDetail(String... details) {
         for (String detail : details) {
             if (this.getDetail() != null && this.getDetail() == detail) {
                 return true;
@@ -163,7 +163,7 @@ public class Movement {
     }
 
     // HasAnyLabel returns true if any of the labels is contained by the labels of the movement
-    public boolean hasAnyLabel(String[] labels) {
+    public boolean hasAnyLabel(String... labels) {
         for (String label : labels) {
             for (String movLabel : this.getLabels()) {
                 if (movLabel != null && movLabel.equals(label)) {
@@ -175,14 +175,14 @@ public class Movement {
     }
 
     // HasClientID returns true if any of the clientIDs is equal than movement ClientID, else false.
-    public boolean hasClientID(Long[] clientIDs) {
+    public boolean hasClientID(Long... clientIDs) {
         for (Long clientID : clientIDs) {
-            if this.getClientID() != null && this.getClientID().equals(clientID) {
-                return true
+            if (this.getClientID() != null && this.getClientID().equals(clientID)) {
+                return true;
             }
         }
 
-        return false
+        return false;
     }
 
     // HasSiteID returns true if any of the siteIds are equal to the one of the movement, otherwise return false
@@ -203,135 +203,132 @@ public class Movement {
 
     // IsIncome returns if the movement type is a income
     public boolean isIncome() {
-        return this.IsType(TypeIncome)
+        return this.isType(TypeIncome);
     }
 
     // IsIncomePayment returns if the movement is an income and detail is payment
     public boolean isIncomePayment() {
-        return this.IsIncome() && this.HasDetail(DetailPayment)
+        return this.isIncome() && this.hasDetail(DetailPayment);
     }
 
     // IsFinancialFee returns if the movement is a fee and detail is payment_fund or financing_rate
     public boolean isFinancialFee() {
-        return this.IsFee() && this.HasDetail(DetailPaymentFund, DetailFinancingRate)
+        return this.isFee() && this.hasDetail(DetailPaymentFund, DetailFinancingRate);
     }
 
     // IsShippingFee returns if the movement is a fee and detail is shipping_fmb, shipping, shipping_ds,
 // or shipping_ff, shipping_mp, shipping_xd, subsidized_shipping_cbt
     public boolean isShippingFee() {
-        return this.IsFee() && this.HasDetail(DetailShippingFMB, DetailShipping, DetailShippingDS, DetailShippingFF, DetailShippingXD, DetailShippingMP, DetailSubsidizedShippingCBT)
+        return this.isFee() && this.hasDetail(DetailShippingFMB, DetailShipping, DetailShippingDS, DetailShippingFF, DetailShippingXD, DetailShippingMP, DetailSubsidizedShippingCBT);
     }
 
     // IsIncomeCoupon returns if the movement type is income and financial entity is a coupon
     public boolean isIncomeCoupon() {
-        return this.IsIncome() && this.IsFinancialEntity(FinancialEntityCoupon)
+        return this.isIncome() && this.isFinancialEntity(FinancialEntityCoupon);
     }
 
     // IsCouponFee returns if the movement type is fee and financial entity is a coupon
     public boolean isCouponFee() {
-        return this.IsFee() && this.IsFinancialEntity(FinancialEntityCoupon)
+        return this.isFee() && this.isFinancialEntity(FinancialEntityCoupon);
     }
 
     // IsTax returns if the movement detail is tax_with_holding and its financial entity is not Iget
     public boolean isTax() {
-        return this.HasDetail(DetailTaxWithholding) && !this.IsFinancialEntity(FinancialEntityIget)
+        return this.hasDetail(DetailTaxWithholding) && !this.isFinancialEntity(FinancialEntityIget);
     }
 
     // IsMercadoPagoFee returns if the movement is a fee and its detail is account_fund, payment, mp_fee, payment_addition, money_transfer or special_fee.
     public boolean isMercadoPagoFee() {
-        return this.IsFee() && this.HasDetail(DetailAccountFund, DetailPayment, DetailMPFee, DetailPaymentAddition, DetailMoneyTransfer, DetailSpecialFee)
+        return this.isFee() && this.hasDetail(DetailAccountFund, DetailPayment, DetailMPFee, DetailPaymentAddition, DetailMoneyTransfer, DetailSpecialFee);
     }
 
     // IsMarketplaceFee returns if the movement is a fee and its detail is meli_charge, ml_fee or meli_fee.
     public boolean isMarketplaceFee() {
-        return this.IsFee() && this.HasDetail(DetailMELICharge, DetailMLFee, DetailMELIFee)
+        return this.isFee() && this.hasDetail(DetailMELICharge, DetailMLFee, DetailMELIFee);
     }
 
     // IsChargebackCancellation returns true if the movement has CBKRecovery detail and a cancellation label
     public boolean isChargebackCancellation() {
-        return this.HasDetail(DetailCBKRecovery) && this.isCancellation()
+        return this.hasDetail(DetailCBKRecovery) && this.isCancellation();
     }
 
     // IsChargeback returns true if the movement has CBKRecovery detail and doesn't have a  cancellation label
     public boolean isChargeback() {
-        return this.HasDetail(DetailCBKRecovery) && !this.isCancellation()
+        return this.hasDetail(DetailCBKRecovery) && !this.isCancellation();
     }
 
     // IsPayment returns true if the movement has payment detail
     public boolean isPayment() {
-        return this.HasDetail(DetailPayment)
+        return this.hasDetail(DetailPayment);
     }
 
     // ContainsWithdraw returns true if the movement has withdraw detail
-    func(m *Movement) ContainsWithdraw()
-
-    {
-        return this.HasDetail(DetailWithdraw)
+    public boolean containsWithdraw() {
+        return this.hasDetail(DetailWithdraw);
     }
 
     // IsCommissionForAdvance returns true if the movement is type fee and has the release in advance detail and have the comission client ID
     public boolean isCommissionForAdvance() {
-        return this.IsType(TypeFee) && this.HasDetail(DetailReleaseInAdvance) && this.HasClientID(MovementClientIDCommission)
+        return this.isType(TypeFee) && this.hasDetail(DetailReleaseInAdvance) && this.hasClientID(MovementClientIDCommission);
     }
 
     // IsExpenseOrIncome returns true if the movement is type expense or income
     public boolean isExpenseOrIncome() {
-        return this.IsType(TypeExpense) || this.IsType(TypeIncome)
+        return this.isType(TypeExpense) || this.isType(TypeIncome);
     }
 
     // IsExpense returns true if the movement is type expense
     public boolean isExpense() {
-        return this.IsType(TypeExpense)
+        return this.isType(TypeExpense);
     }
 
     // IsCredit returns true if the movement has credit detail
     public boolean isCredit() {
-        return this.HasDetail(DetailCredit)
+        return this.hasDetail(DetailCredit);
     }
 
     // IsMerchantCredit returns true if the movement has merchantCredit detail
     public boolean isMerchantCredit() {
-        return this.HasDetail(DetailMerchantCredit)
+        return this.hasDetail(DetailMerchantCredit);
     }
 
     // IsMediation returns true if the movement has Mediation detail
     public boolean isMediation() {
-        return this.HasDetail(DetailMediation) //MovementDetailMediation
+        return this.hasDetail(DetailMediation); //MovementDetailMediation
     }
 
     public boolean isCancellation() {
-        return this.HasAnyLabel(LabelCancellation)
+        return this.hasAnyLabel(LabelCancellation);
     }
 
     public boolean isPartial() {
-        return this.HasAnyLabel(LabelPartial)
+        return this.hasAnyLabel(LabelPartial);
     }
 
     // IsPartialRefund returns true if the movement has the label IsCancellation and the label partial
     public boolean isPartialRefund() {
-        return this.isCancellation() && this.isPartial()
+        return this.isCancellation() && this.isPartial();
     }
 
     // IsFullRefund returns true if the movement has the label IsCancellation and doesn't have the label partial
     public boolean isFullRefund() {
-        return this.isCancellation() && !this.isPartial()
+        return this.isCancellation() && !this.isPartial();
     }
 
     // IsMoneyTransfer returns true if the movement has the money transfer detail
     public boolean isMoneyTransfer() {
-        return this.HasDetail(DetailMoneyTransfer)
+        return this.hasDetail(DetailMoneyTransfer);
     }
 
     // IsSpecialFund returns true if the movement is type fund and has special fund detail
     public boolean isSpecialFund() {
-        return this.IsType(TypeFund) && this.HasDetail(DetailSpecialFund)
+        return this.isType(TypeFund) && this.hasDetail(DetailSpecialFund);
     }
 
     // IsFundShipping returns true if the movement is type fund and has shipping fpp detail
     public boolean isFundShipping() {
-        return this.IsType(TypeFund) && this.HasDetail(DetailShippingFPP)
+        return this.isType(TypeFund) && this.hasDetail(DetailShippingFPP);
     }
-*/
 
     public static final class Builder {
         private Long id;
